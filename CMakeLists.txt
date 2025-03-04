@@ -1,2 +1,2 @@
-idf_component_register(SRCS "esp-digipot-driver.c"
+idf_component_register(SRCS "esp_digipot_driver.c"
                     INCLUDE_DIRS "include")
