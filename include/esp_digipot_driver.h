@@ -3,12 +3,15 @@
 #include "driver/i2c.h"
 
 typedef struct {
+    char device_name[16];  // Max of 16 characters, including null terminator
     i2c_port_t i2c_port;  // I2C port number
     uint8_t i2c_address;  // I2C address of the digipot
+    uint8_t wiper_reg;
     uint8_t max_position; // Max position of the digipot
     uint32_t min_position; // Min position of the digipot
     uint8_t wiper_bit_count; // Bit resolution of the wiper, typically 7 or 8 bits
     uint8_t soft_reset_cmd;
+    uint32_t transaction_timeout_ms;
 } digipot_handle_t;
 
 esp_err_t digipot_init(digipot_handle_t *digipot_handle);

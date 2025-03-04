@@ -6,61 +6,49 @@ static const char* TAG = "digipot-driver"
 
 esp_err_t digipot_init(digipot_handle_t *digipot_handle) {
     if (digipot_handle == NULL) {
-        ESP_LOGE(TAG, "Digipot handle improperly initialized!")
+        ESP_LOGE(TAG, "Digipot handle improperly initialized!");
+        return ESP_ERR_INVALID_ARG;
     }
 
-    /* TODO: Add in initialization support for a soft reset */
-    esp_err_t err;
-
-    err = ESP_OK
-
-    return err;
+    ESP_LOGI(TAG, "Initializing digital potentiometer...");
+    return digipot_soft_reset(digipot_handle);
 }
 
 esp_err_t digipot_set_wiper_position(uint8_t val, digipot_handle_t *digipot_handle) {
-    if (val > digipot_handle->max_position || val < digipot_handle.min_position) {
-        ESP_LOGE(TAG, 
-                "Provided value %d falls outside of the min and max range defined in the digipot handle (%d < your value < %d)",
-                val,
-                digipot_handle->min_position,
-                digipot_handle->max_position);
-        return ESP_INVALID_ARG;
+    if (digipot_handle == NULL) {
+        ESP_LOGE(TAG, "Digipot handle is NULL!");
+        return ESP_ERR_INVALID_ARG;
+    }
+    if (val > digipot_handle->max_position || val < digipot_handle->min_position) {
+        ESP_LOGE(TAG, "Value %d out of range (%d - %d)", val, digipot_handle->min_position, digipot_handle->max_position);
+        return ESP_ERR_INVALID_ARG;
     }
     
-    /* TODO: Add in logic to set the register properly */
-    if (digipot_register_write() != ESP_OK) {
-        ESP_LOGE(TAG, "Writing to register failed!")
-        return ESP_ERR_INVALID_RESPONSE;
-    }
-    return ESP_OK;
+    uint8_t data[2] = {digipot_handle->wiper_reg, val};
+    return digipot_register_write(data, 2, digipot_handle);
 }
 
 esp_err_t digipot_register_write(uint8_t *tx_buf, uint8_t tx_buf_size, digipot_handle_t *digipot_handle) {
-
-    /* TODO: Add in logic to set the register properly, given an array of 8 bit values */
-    esp_err_t err;
-
-    err = ESP_OK
-
-    return err;
+    if (digipot_handle == NULL || tx_buf == NULL) {
+        ESP_LOGE(TAG, "Invalid arguments for register write!");
+        return ESP_ERR_INVALID_ARG;
+    }
+    return i2c_master_write_to_device(digipot_handle->i2c_port, digipot_handle->i2c_addr, tx_buf, tx_buf_size, digipot_handle.transaction_timeout_ms / portTICK_PERIOD_MS);
 }
 
 esp_err_t digipot_register_read(uint8_t *rx_buf, uint8_t rx_buf_size, digipot_handle_t *digipot_handle) {
-
-    /* TODO: Add in logic to read the register properly into an array, ensuring that it doesnt overflow given the size */
-    esp_err_t err;
-
-    err = ESP_OK
-
-    return err;
+    if (digipot_handle == NULL || rx_buf == NULL) {
+        ESP_LOGE(TAG, "Invalid arguments for register read!");
+        return ESP_ERR_INVALID_ARG;
+    }
+    return i2c_master_read_from_device(digipot_handle->i2c_port, digipot_handle->i2c_addr, rx_buf, rx_buf_size, digipot_handle.transaction_timeout_ms / portTICK_PERIOD_MS);
 }
 
 esp_err_t digipot_soft_reset(digipot_handle_t *digipot_handle) {
-
-    /* TODO: Add in logic to soft reset the register properly. Use the reset command from the struct so it can be ported to different devices */
-    esp_err_t err;
-
-    err = ESP_OK
-
-    return err;
+    if (digipot_handle == NULL) {
+        ESP_LOGE(TAG, "Invalid digipot handle for soft reset!");
+        return ESP_ERR_INVALID_ARG;
+    }
+    uint8_t reset_cmd = digipot_handle->reset_cmd;
+    return digipot_register_write(&reset_cmd, 1, digipot_handle);
 }
