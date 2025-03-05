@@ -24,6 +24,7 @@ typedef struct {
 
 typedef enum {
     AD5246,
+    MCP4531,
     /* Add more variants here if needed */
     DIGIPOT_COUNT
 } digipot_type_t;
