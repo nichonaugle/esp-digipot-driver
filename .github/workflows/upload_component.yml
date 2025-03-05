@@ -23,4 +23,5 @@ jobs:
           namespace: "nichonaugle"
           api_token: ${{ secrets.IDF_COMPONENT_API_TOKEN }}
           repository_url: "https://github.com/nichonaugle/esp-digipot-driver"
+          skip_pre_release: false
           dry_run: yes
