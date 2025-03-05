@@ -34,12 +34,12 @@ digipot_init(&digipot_handle, master_i2c_bus_handle, SELECTED_DIGIPOT, DESIRED_O
 
 2. Set the wiper position:
 ```c
-digipot_set_wiper_position(wiper_value, &digipot)
+digipot_set_wiper_position(wiper_value, &digipot_handle)
 ```
 
 3. Deinitialize the digipot:
 ```c
-digipot_deinit(&digipot)
+digipot_deinit(&digipot_handle)
 ```
 
 ## Adding a New Digipot Configuration
