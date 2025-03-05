@@ -36,12 +36,12 @@ esp_err_t digipot_register_write(uint8_t *tx_buf, uint8_t tx_buf_size, digipot_h
     return i2c_master_write_to_device(digipot_handle->i2c_port, digipot_handle->i2c_addr, tx_buf, tx_buf_size, digipot_handle.transaction_timeout_ms / portTICK_PERIOD_MS);
 }
 
-esp_err_t digipot_register_read(uint8_t *rx_buf, uint8_t rx_buf_size, digipot_handle_t *digipot_handle) {
+esp_err_t digipot_register_read(uint8_t reg_to_read, uint8_t *rx_buf, uint8_t rx_buf_size, digipot_handle_t *digipot_handle) {
     if (digipot_handle == NULL || rx_buf == NULL) {
         ESP_LOGE(TAG, "Invalid arguments for register read!");
         return ESP_ERR_INVALID_ARG;
     }
-    return i2c_master_read_from_device(digipot_handle->i2c_port, digipot_handle->i2c_addr, rx_buf, rx_buf_size, digipot_handle.transaction_timeout_ms / portTICK_PERIOD_MS);
+    return i2c_master_transmit_receive(digipot_handle->i2c_port, &reg_to_read, digipot_handle->i2c_addr, rx_buf, rx_buf_size, digipot_handle.transaction_timeout_ms / portTICK_PERIOD_MS);
 }
 
 esp_err_t digipot_soft_reset(digipot_handle_t *digipot_handle) {

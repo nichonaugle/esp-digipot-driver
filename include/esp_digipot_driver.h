@@ -1,5 +1,4 @@
 #include "esp_err.h"
-#include "esp_digipot_driver.h"
 #include "driver/i2c.h"
 
 typedef struct {
