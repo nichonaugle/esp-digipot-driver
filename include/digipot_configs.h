@@ -4,8 +4,9 @@
 const digipot_handle_t digipot_config_table[] = {
     [AD5246] = {
         .device_name = "AD5246 - Analog Devices",
-        .i2c_port = NULL,        // Leave null, defined in init function
-        .dev_cfg = NULL,         // Leave null, defined in init function
+        .i2c_port = 0,           // Leave 0, defined in init function
+        .dev_cfg = {0},          // Initialize to zero, will be set in init function
+        .dev_handle = NULL,      // Leave null, defined in init function
         .i2c_address = 0x2C,
         .wiper_reg = 0x00,
         .max_position = 255,

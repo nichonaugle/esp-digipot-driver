@@ -8,7 +8,7 @@
 static const char* TAG = "digipot-driver";
 
 esp_err_t digipot_init(digipot_handle_t *digipot_handle, i2c_master_bus_handle_t bus_handle, digipot_type_t digipot_type, gpio_num_t sda_gpio, gpio_num_t scl_gpio, size_t clock_speed) {
-    if (sda_gpio == NULL || scl_gpio == NULL || clock_speed == NULL || digipot_handle == NULL) {
+    if (digipot_handle == NULL) {
         ESP_LOGE(TAG, "Digipot improperly initialized!");
         return ESP_ERR_INVALID_ARG;
     }
@@ -18,16 +18,17 @@ esp_err_t digipot_init(digipot_handle_t *digipot_handle, i2c_master_bus_handle_t
         return ESP_ERR_INVALID_ARG;
     }
 
-    digipot_handle = digipot_config_table[digipot_type];
+    *digipot_handle = digipot_config_table[digipot_type];
 
-    digipot_handle->dev_cfg = {
-        .address = digipot_handle.i2c_address,
-        .clk_speed = clock_speed,
-        .sda_io_num = sda_gpio,
-        .scl_io_num = scl_gpio
+    i2c_device_config_t _dev_cfg = {
+        .dev_addr_length = digipot_handle->i2c_address >> 1, // Assuming 7-bit address
+        .device_address = digipot_handle->i2c_address,
+        .scl_speed_hz = clock_speed,
     };
 
-    esp_err_t err = i2c_master_bus_add_device(bus_handle, digipot_handle->dev_cfg, digipot_handle->dev_handle);
+    digipot_handle->dev_cfg = _dev_cfg;
+
+    esp_err_t err = i2c_master_bus_add_device(bus_handle, &digipot_handle->dev_cfg, &digipot_handle->dev_handle);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "Failed to add digipot to bus!");
         return err;
