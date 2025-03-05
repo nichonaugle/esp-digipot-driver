@@ -12,7 +12,7 @@ extern "C" {
  * @brief Structure representing a digital potentiometer (digipot) handle.
  */
 typedef struct {
-    char device_name[32];              // Max of 16 characters, including null terminator
+    char device_name[32];              // Max of 32 characters, including null terminator
     i2c_port_t i2c_port;               // I2C port number
     i2c_device_config_t dev_cfg;       // I2C device configuration
     i2c_master_dev_handle_t dev_handle; // I2C device handle
