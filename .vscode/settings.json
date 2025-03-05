@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "*.html": "html",
-        "esp-digipot-driver.h": "c",
-        "esp_digipot_driver.h": "c",
-        "digipot_configs.h": "c"
-    }
-}
