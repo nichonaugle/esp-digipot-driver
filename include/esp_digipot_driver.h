@@ -1,5 +1,12 @@
+#ifndef ESP_DIGIPOT_DRIVER_H
+#define ESP_DIGIPOT_DRIVER_H
+
 #include "esp_err.h"
 #include "driver/i2c_master.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct {
     char device_name[32];  // Max of 16 characters, including null terminator
@@ -21,7 +28,7 @@ typedef enum {
     DIGIPOT_COUNT
 } digipot_type_t;
 
-esp_err_t digipot_init(digipot_handle_t *digipot_handle, digipot_type_t digipot_type, gpio_num_t sda_gpio, gpio_num_t scl_gpio, size_t clock_speed);
+esp_err_t digipot_init(digipot_handle_t *digipot_handle, i2c_master_bus_handle_t bus_handle, digipot_type_t digipot_type, gpio_num_t sda_gpio, gpio_num_t scl_gpio, size_t clock_speed);
 
 esp_err_t digipot_set_wiper_position(uint8_t val, digipot_handle_t *digipot_handle);
 
@@ -32,3 +39,9 @@ esp_err_t digipot_register_write(uint8_t *tx_buf, uint8_t tx_buf_size, digipot_h
 esp_err_t digipot_soft_reset(digipot_handle_t *digipot_handle);
 
 esp_err_t digipot_deinit(digipot_handle_t *digipot_handle);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif //ESP_DIGIPOT_DRIVER_H
