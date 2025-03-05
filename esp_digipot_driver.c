@@ -70,8 +70,12 @@ esp_err_t digipot_soft_reset(digipot_handle_t *digipot_handle) {
         ESP_LOGE(TAG, "Invalid digipot handle for soft reset!");
         return ESP_ERR_INVALID_ARG;
     }
-    uint8_t soft_reset_cmd = digipot_handle->soft_reset_cmd;
-    return digipot_register_write(&soft_reset_cmd, 1, digipot_handle);
+    if(digipot_handle->soft_reset_cmd < 0) {
+        ESP_LOGW(TAG, "Current Digipot does not support soft reset. No reset occured.");
+        return ESP_OK;
+    }
+    uint8_t tx_buf[1] = {(uint8_t)(digipot_handle->soft_reset_cmd && 0xFF)};
+    return digipot_register_write(tx_buf, sizeof(tx_buf), digipot_handle);
 }
 
 esp_err_t digipot_deinit(digipot_handle_t *digipot_handle) {

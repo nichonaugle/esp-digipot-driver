@@ -25,7 +25,7 @@ const digipot_handle_t digipot_config_table[] = {
         .max_position = 127,                        // Inclusive of max
         .min_position = 0,                          // Inclusive of min
         .wiper_bit_count = 7,
-        .soft_reset_cmd = 0x80,
+        .soft_reset_cmd = -1,
         .transaction_timeout_ms = 100
     }
 };
