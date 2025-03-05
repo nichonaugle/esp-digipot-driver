@@ -28,7 +28,7 @@ typedef enum {
     DIGIPOT_COUNT
 } digipot_type_t;
 
-esp_err_t digipot_init(digipot_handle_t *digipot_handle, i2c_master_bus_handle_t bus_handle, digipot_type_t digipot_type, gpio_num_t sda_gpio, gpio_num_t scl_gpio, size_t clock_speed);
+esp_err_t digipot_init(digipot_handle_t *digipot_handle, i2c_master_bus_handle_t bus_handle, digipot_type_t digipot_type, size_t clock_speed);
 
 esp_err_t digipot_set_wiper_position(uint8_t val, digipot_handle_t *digipot_handle);
 

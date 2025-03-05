@@ -28,12 +28,11 @@ void app_main(void) {
     ESP_ERROR_CHECK(i2c_new_master_bus(&i2c_mst_config, &bus_handle));
 
     digipot_handle_t digipot;
-    if (digipot_init(&digipot, bus_handle, SELECTED_DIGIPOT, I2C_MASTER_SDA_IO, I2C_MASTER_SCL_IO, I2C_MASTER_FREQ_HZ) != ESP_OK) {
+    if (digipot_init(&digipot, bus_handle, SELECTED_DIGIPOT, I2C_MASTER_FREQ_HZ) != ESP_OK) {
         ESP_LOGE(TAG, "Failed to initialize digipot!");
         return;
     }
 
-    uint8_t wiper_value = digipot.min_position;
     for (uint8_t wiper_value = digipot.min_position; wiper_value < digipot.max_position; wiper_value++) {
         if (digipot_set_wiper_position(wiper_value, &digipot) != ESP_OK) {
             ESP_LOGE(TAG, "Failed to set wiper position!");
