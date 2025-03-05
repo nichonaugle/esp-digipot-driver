@@ -25,3 +25,8 @@ jobs:
           repository_url: "https://github.com/nichonaugle/esp-digipot-driver"
           skip_pre_release: false
           dry_run: yes
+
+      - name: Check upload status
+        run: |
+          JOB_ID="dbc548a7-70ab-47ca-ab48-fcd07404d97f"
+          compote component upload-status --job=$JOB_ID
