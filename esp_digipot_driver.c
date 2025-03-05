@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "esp_digipot_driver.h"
-#include "digipot_configs.h"
+#include "esp_digipot_configs.h"
 #include "esp_err.h"
 #include "esp_log.h"
 #include "driver/i2c_master.h"
